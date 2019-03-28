@@ -334,6 +334,13 @@ public class Parser {
       }
       break;
 */
+    case Token.PASS:
+    {
+        acceptIt();
+        finish(commandPos);
+        commandAST = new EmptyCommand(commandPos);
+    }
+    break;
     
     case Token.LOOP:
     {
