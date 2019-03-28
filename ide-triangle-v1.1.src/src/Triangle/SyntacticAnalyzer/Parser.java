@@ -484,17 +484,17 @@ public class Parser {
         //commandAST = new ChooseCommand(eAST, commandPos);
     }
     break;  
-      
+   /*   
     case Token.SEMICOLON:
     case Token.END:
     case Token.ELSE:
     case Token.IN:
     case Token.EOT:
 
-      finish(commandPos);
-      commandAST = new EmptyCommand(commandPos);
+      syntacticError("\"%\" cannot start a command",
+        currentToken.spelling);
       break;
-
+*/
     default:
       syntacticError("\"%\" cannot start a command",
         currentToken.spelling);
