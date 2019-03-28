@@ -96,17 +96,18 @@ final class Token extends Object {
     WHILE		= 30,
 
     // punctuation...
-    DOT			= 31,
-    COLON		= 32,
-    SEMICOLON           = 33,
-    COMMA		= 34,
-    BECOMES		= 35,
-    IS			= 36,
-    VERTICALBAR         = 37,
-    ASIGNER             = 38,
-    DOLAR               = 39,
-    DOTDOT              = 40, 
+    VERTICALBAR         = 31,
+    ASIGNER             = 32,
+    DOLAR               = 33,
+    DOTDOT              = 34,      
           
+    DOT			= 35,
+    COLON		= 36,
+    SEMICOLON           = 37,
+    COMMA		= 38,
+    BECOMES		= 39,
+    IS			= 40,
+           
 
     // brackets...
     LPAREN		= 41,
