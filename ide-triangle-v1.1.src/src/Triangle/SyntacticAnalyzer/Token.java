@@ -97,7 +97,7 @@ final class Token extends Object {
 
     // punctuation...
     VERTICAL            = 31,
-    DOUBLEBECOMES       = 32,
+    DOUBLEBECOMES      = 32,
     DOLAR               = 33,
     DOUBLEDOT           = 34,      
           

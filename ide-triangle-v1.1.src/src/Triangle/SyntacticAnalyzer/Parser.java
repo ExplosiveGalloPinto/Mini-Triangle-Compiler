@@ -352,9 +352,12 @@ public class Parser {
                 Expression eAST = parseExpression();
                 accept(Token.DO);
                 Command cAST = parseCommand();
+                System.out.println("11");
                 accept(Token.END);
+                System.out.println("22");
                 finish(commandPos);
-                //commandAST = LoopWhileDoCommand(eAST,cAST,commandPos);
+                System.out.println("33");
+                commandAST = new WhileCommand(eAST, cAST, commandPos);
             }
             break;
             case Token.UNTIL:
@@ -444,10 +447,10 @@ public class Parser {
                         currentToken.spelling);
                     break;
                 }
-            }
-            break;
+            }         
         }
     }
+    break;
     case Token.LET:
     {
         acceptIt();
@@ -458,8 +461,7 @@ public class Parser {
         finish(commandPos);
         commandAST = new LetCommand(dAST, cAST, commandPos);
     }
-    break;
-    
+    break;  
     case Token.IF:
     {
         acceptIt();
@@ -501,7 +503,6 @@ public class Parser {
       break;
 
     }
-
     return commandAST;
   }
 
