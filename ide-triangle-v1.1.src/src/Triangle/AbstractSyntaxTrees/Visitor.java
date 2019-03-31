@@ -19,11 +19,25 @@ public interface Visitor {
   // Commands
   public abstract Object visitAssignCommand(AssignCommand ast, Object o);
   public abstract Object visitCallCommand(CallCommand ast, Object o);
+  
+  public abstract Object visitChooseCommand(ChooseCommand ast, Object o);                  //nuevo
+  
   public abstract Object visitEmptyCommand(EmptyCommand ast, Object o);
   public abstract Object visitIfCommand(IfCommand ast, Object o);
   public abstract Object visitLetCommand(LetCommand ast, Object o);
   public abstract Object visitSequentialCommand(SequentialCommand ast, Object o);
   public abstract Object visitWhileCommand(WhileCommand ast, Object o);
+  
+  public abstract Object visitPassCommand(PassCommand ast, Object o);                           //nuevo
+  public abstract Object visitLoopWhileDoCommand(LoopWhileDoCommand ast, Object o);             //nuevo
+  public abstract Object visitLoopUntilDoCommand(LoopUntilDoCommand ast, Object o);             //nuevo
+  public abstract Object visitLoopDoWhileCommand(LoopDoWhileCommand ast, Object o);             //nuevo
+  public abstract Object visitLoopDoUntilCommand(LoopDoUntilCommand ast, Object o);             //nuevo
+  public abstract Object visitLoopForDoCommand(LoopForDoCommand ast, Object o);                 //nuevo
+  public abstract Object visitLoopForWhileCommand(LoopForWhileCommand ast, Object o);           //nuevo
+  public abstract Object visitLoopForUntilCommand(LoopForUntilCommand ast, Object o);           //nuevo
+
+  
 
 
   // Expressions
@@ -48,7 +62,19 @@ public interface Visitor {
   public abstract Object visitTypeDeclaration(TypeDeclaration ast, Object o);
   public abstract Object visitUnaryOperatorDeclaration(UnaryOperatorDeclaration ast, Object o);
   public abstract Object visitVarDeclaration(VarDeclaration ast, Object o);
-
+  public abstract Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o);                    //Nuevo
+  public abstract Object visitPrivateDeclaration(PrivateDeclaration ast, Object o);            //Nuevo
+  public abstract Object visitProcFuncDeclaration(ProcFuncDeclaration ast, Object o);          //Nuevo
+  public abstract Object visitParDeclaration(ParDeclaration ast, Object o);                     //Nuevo
+  public abstract Object visitCaseLiteralDeclaration(CaseLiteralDeclaration ast, Object o);     //Nuevo
+  public abstract Object visitCaseLiteralCharDeclaration(CaseLiteralCharDeclaration ast, Object o);     //Nuevo
+  public abstract Object visitCaseRangeDeclaration(CaseRangeDeclaration ast, Object o);         //Nuevo
+  public abstract Object visitCaseLiteralsDeclaration(CaseLiteralsDeclaration ast, Object o);    //Nuevo
+  public abstract Object visitElseCaseDeclaration(ElseCaseDeclaration ast, Object o);           //Nuevo
+  public abstract Object visitCaseDeclaration(CaseDeclaration ast, Object o);                    //Nuevo
+  public abstract Object visitCasesDeclaration(CasesDeclaration ast, Object o);                    //Nuevo
+  public abstract Object visitVarInitialization(VarInitialization ast, Object o);                //Nuevo
+  
   // Array Aggregates
   public abstract Object visitMultipleArrayAggregate(MultipleArrayAggregate ast, Object o);
   public abstract Object visitSingleArrayAggregate(SingleArrayAggregate ast, Object o);

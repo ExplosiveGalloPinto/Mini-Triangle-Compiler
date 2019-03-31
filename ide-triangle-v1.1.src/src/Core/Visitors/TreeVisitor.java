@@ -14,13 +14,21 @@ import Triangle.AbstractSyntaxTrees.BinaryOperatorDeclaration;
 import Triangle.AbstractSyntaxTrees.BoolTypeDenoter;
 import Triangle.AbstractSyntaxTrees.CallCommand;
 import Triangle.AbstractSyntaxTrees.CallExpression;
+import Triangle.AbstractSyntaxTrees.CaseDeclaration;
+import Triangle.AbstractSyntaxTrees.CaseLiteralCharDeclaration;
+import Triangle.AbstractSyntaxTrees.CaseLiteralDeclaration;
+import Triangle.AbstractSyntaxTrees.CaseLiteralsDeclaration;
+import Triangle.AbstractSyntaxTrees.CaseRangeDeclaration;
+import Triangle.AbstractSyntaxTrees.CasesDeclaration;
 import Triangle.AbstractSyntaxTrees.CharTypeDenoter;
 import Triangle.AbstractSyntaxTrees.CharacterExpression;
 import Triangle.AbstractSyntaxTrees.CharacterLiteral;
+import Triangle.AbstractSyntaxTrees.ChooseCommand;
 import Triangle.AbstractSyntaxTrees.ConstActualParameter;
 import Triangle.AbstractSyntaxTrees.ConstDeclaration;
 import Triangle.AbstractSyntaxTrees.ConstFormalParameter;
 import Triangle.AbstractSyntaxTrees.DotVname;
+import Triangle.AbstractSyntaxTrees.ElseCaseDeclaration;
 import Triangle.AbstractSyntaxTrees.EmptyActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.EmptyCommand;
 import Triangle.AbstractSyntaxTrees.EmptyExpression;
@@ -37,18 +45,30 @@ import Triangle.AbstractSyntaxTrees.IntegerExpression;
 import Triangle.AbstractSyntaxTrees.IntegerLiteral;
 import Triangle.AbstractSyntaxTrees.LetCommand;
 import Triangle.AbstractSyntaxTrees.LetExpression;
+import Triangle.AbstractSyntaxTrees.LoopDoUntilCommand;
+import Triangle.AbstractSyntaxTrees.LoopDoWhileCommand;
+import Triangle.AbstractSyntaxTrees.LoopForDoCommand;
+import Triangle.AbstractSyntaxTrees.LoopForUntilCommand;
+import Triangle.AbstractSyntaxTrees.LoopForWhileCommand;
+import Triangle.AbstractSyntaxTrees.LoopUntilDoCommand;
+import Triangle.AbstractSyntaxTrees.LoopWhileDoCommand;
 import Triangle.AbstractSyntaxTrees.MultipleActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleArrayAggregate;
 import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
 import Triangle.AbstractSyntaxTrees.MultipleFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleRecordAggregate;
 import Triangle.AbstractSyntaxTrees.Operator;
+import Triangle.AbstractSyntaxTrees.ParDeclaration;
+import Triangle.AbstractSyntaxTrees.PassCommand;
+import Triangle.AbstractSyntaxTrees.PrivateDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcActualParameter;
 import Triangle.AbstractSyntaxTrees.ProcDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcFormalParameter;
+import Triangle.AbstractSyntaxTrees.ProcFuncDeclaration;
 import Triangle.AbstractSyntaxTrees.Program;
 import Triangle.AbstractSyntaxTrees.RecordExpression;
 import Triangle.AbstractSyntaxTrees.RecordTypeDenoter;
+import Triangle.AbstractSyntaxTrees.RecursiveDeclaration;
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
 import Triangle.AbstractSyntaxTrees.SimpleTypeDenoter;
@@ -65,6 +85,7 @@ import Triangle.AbstractSyntaxTrees.UnaryOperatorDeclaration;
 import Triangle.AbstractSyntaxTrees.VarActualParameter;
 import Triangle.AbstractSyntaxTrees.VarDeclaration;
 import Triangle.AbstractSyntaxTrees.VarFormalParameter;
+import Triangle.AbstractSyntaxTrees.VarInitialization;
 import Triangle.AbstractSyntaxTrees.Visitor;
 import Triangle.AbstractSyntaxTrees.VnameExpression;
 import Triangle.AbstractSyntaxTrees.WhileCommand;
@@ -436,5 +457,108 @@ public class TreeVisitor implements Visitor {
         
         return(t);             
     }
+    
+    public DefaultMutableTreeNode createQuinary(String caption, AST child1, AST child2, AST child3, AST child4, AST child5) {
+        DefaultMutableTreeNode t = new DefaultMutableTreeNode(caption);
+        t.add((DefaultMutableTreeNode)child1.visit(this, null));
+        t.add((DefaultMutableTreeNode)child2.visit(this, null));
+        t.add((DefaultMutableTreeNode)child3.visit(this, null));
+        t.add((DefaultMutableTreeNode)child4.visit(this, null));
+        t.add((DefaultMutableTreeNode)child5.visit(this, null));
+        
+        return(t);             
+    }
     // </editor-fold>
+    
+      //Se agregaron todas las modificaciones del Visitor
+    public Object visitPassCommand(PassCommand nc, Object o) {
+        return(createNullary("Nothing Command"));
+    }
+    
+    public Object visitLoopDoUntilCommand(LoopDoUntilCommand lwc, Object o) {
+        return(createBinary("LoopDoUntil Command", lwc.E, lwc.C));
+    }
+
+    
+    public Object visitLoopDoWhileCommand(LoopDoWhileCommand luc, Object o) {
+        return(createBinary("LoopDoWhile Command", luc.E, luc.C));
+    }
+
+    public Object visitLoopWhileDoCommand(LoopWhileDoCommand ldwc, Object o) {
+        return(createBinary("LoopWhileDo Command", ldwc.E, ldwc.C));
+    }
+
+    public Object visitLoopUntilDoCommand(LoopUntilDoCommand lduc, Object o) {
+        return(createBinary("LoopUntilDo Command", lduc.E, lduc.C));
+    }
+
+    public Object visitLoopForDoCommand(LoopForDoCommand lfc, Object o) {
+        return(createQuaternary("LoopForDo Command", lfc.I, lfc.E1, lfc.E2, lfc.C));
+    }
+    
+    public Object visitLoopForUntilCommand(LoopForUntilCommand lfc, Object o) {
+        return(createQuinary("LoopForUntil Command", lfc.I, lfc.E1, lfc.E2,lfc.E3, lfc.C));
+    }
+        
+    public Object visitLoopForWhileCommand(LoopForWhileCommand lfc, Object o) {
+        return(createQuinary("LoopForWhile Command", lfc.I, lfc.E1, lfc.E2,lfc.E3, lfc.C));
+    }
+
+    public Object visitRecursiveDeclaration(RecursiveDeclaration rd, Object o) {
+        return(createUnary("Recursive Declaration", rd.I));
+    }
+
+    public Object visitPrivateDeclaration(PrivateDeclaration pd, Object o) {
+        return(createBinary("Private Declaration", pd.I, pd.I2));
+    }
+
+    public Object visitProcFuncDeclaration(ProcFuncDeclaration pfd, Object o) {
+        if (pfd.I2 ==null){
+            return(createUnary("ProcFunc Declaration", pfd.I));
+        }else{
+            return(createBinary("ProcFunc Declaration", pfd.I, pfd.I2));
+        }
+    }
+
+    public Object visitVarInitialization(VarInitialization vi, Object o) {
+        return(createBinary("Var Initialization", vi.I, vi.E));
+    }
+    
+    public Object visitChooseCommand(ChooseCommand ch, Object o) {
+        return(createBinary("Choose Command", ch.C, ch.E));
+    }
+    
+    public Object visitParDeclaration(ParDeclaration pd, Object o) {
+        return(createBinary("Par Declaration", pd.d, pd.d2));
+    }
+    
+    public Object visitCaseLiteralDeclaration(CaseLiteralDeclaration cld, Object o) {
+        return(createUnary("Case-Literal Declaration", cld.I));
+    }
+    
+    public Object visitCaseLiteralCharDeclaration(CaseLiteralCharDeclaration ccd, Object o) {
+        return(createUnary("Case Literal Char", ccd.I));
+    }
+    
+    public Object visitCaseRangeDeclaration(CaseRangeDeclaration crd, Object o) {
+        return(createBinary("Case-Range Declaration", crd.I, crd.I2));
+    }
+    
+    public Object visitCaseLiteralsDeclaration(CaseLiteralsDeclaration cdls, Object o) {
+        return(createBinary("Case-Literals Declaration", cdls.cd, cdls.cd2));
+    }
+    
+    public Object visitCaseDeclaration(CaseDeclaration cd, Object o) {
+        return(createBinary("Case Declaration", cd.c, cd.cl));
+    }
+    
+    public Object visitCasesDeclaration(CasesDeclaration cd, Object o) {
+        return(createBinary("Cases Declaration", cd.cd, cd.e));
+    }
+    
+    public Object visitElseCaseDeclaration(ElseCaseDeclaration ecd, Object o) {
+        return(createUnary("ElseCase Declaration", ecd.c));
+    }
+    
+
 }

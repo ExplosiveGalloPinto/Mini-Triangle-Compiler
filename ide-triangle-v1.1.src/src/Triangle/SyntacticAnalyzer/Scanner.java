@@ -130,7 +130,12 @@ public final class Scanner {
 
     case '.':
       takeIt();
-      return Token.DOT;
+      if (currentChar == '.') {          //Comprobar si es doble punto NUEVO
+        takeIt();
+        return Token.DOUBLEDOT;
+      } else
+      
+        return Token.DOT;
 
     case ':':
       takeIt();
@@ -138,7 +143,20 @@ public final class Scanner {
         takeIt();
         return Token.BECOMES;
       } else
-        return Token.COLON;
+          if (currentChar == ':') {
+               takeIt();
+                return Token.DOUBLEBECOMES;
+          }else
+             return Token.COLON;
+    
+      
+    case '$':
+      takeIt();
+      return Token.DOLAR;   //NUEVa
+    
+    case '|':
+      takeIt();
+      return Token.VERTICAL;   //NUEVA
 
     case ';':
       takeIt();
@@ -175,7 +193,7 @@ public final class Scanner {
     case '}':
       takeIt();
       return Token.RCURLY;
-
+      
     case SourceFile.EOT:
       return Token.EOT;
 
