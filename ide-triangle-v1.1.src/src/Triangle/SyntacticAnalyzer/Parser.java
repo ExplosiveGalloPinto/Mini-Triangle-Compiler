@@ -24,12 +24,11 @@ import Triangle.AbstractSyntaxTrees.AssignCommand;
 import Triangle.AbstractSyntaxTrees.BinaryExpression;
 import Triangle.AbstractSyntaxTrees.CallCommand;
 import Triangle.AbstractSyntaxTrees.CallExpression;
-import Triangle.AbstractSyntaxTrees.CaseDeclaration;
-import Triangle.AbstractSyntaxTrees.CaseLiteralCharDeclaration;
-import Triangle.AbstractSyntaxTrees.CaseLiteralDeclaration;
-import Triangle.AbstractSyntaxTrees.CaseLiteralsDeclaration;
-import Triangle.AbstractSyntaxTrees.CaseRangeDeclaration;
-import Triangle.AbstractSyntaxTrees.CasesDeclaration;
+import Triangle.AbstractSyntaxTrees.CaseCommand;
+import Triangle.AbstractSyntaxTrees.CaseLiteralCommand;
+import Triangle.AbstractSyntaxTrees.CaseLiteralsCommand;
+import Triangle.AbstractSyntaxTrees.CaseRangeCommand;
+import Triangle.AbstractSyntaxTrees.CasesCommand;
 import Triangle.AbstractSyntaxTrees.CharacterExpression;
 import Triangle.AbstractSyntaxTrees.CharacterLiteral;
 import Triangle.AbstractSyntaxTrees.ChooseCommand;
@@ -39,7 +38,7 @@ import Triangle.AbstractSyntaxTrees.ConstDeclaration;
 import Triangle.AbstractSyntaxTrees.ConstFormalParameter;
 import Triangle.AbstractSyntaxTrees.Declaration;
 import Triangle.AbstractSyntaxTrees.DotVname;
-import Triangle.AbstractSyntaxTrees.ElseCaseDeclaration;
+import Triangle.AbstractSyntaxTrees.ElseCaseCommand;
 import Triangle.AbstractSyntaxTrees.EmptyActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.EmptyCommand;
 import Triangle.AbstractSyntaxTrees.EmptyFormalParameterSequence;
@@ -286,6 +285,8 @@ public class Parser {
     return commandAST;
   }
 
+
+  
   Command parseSingleCommand() throws SyntaxError {
     Command commandAST = null; // in case there's a syntactic error
 
@@ -505,10 +506,10 @@ public class Parser {
         acceptIt();
         Expression eAST = parseExpression();
         accept(Token.FROM);
-        //cases no lo entiendo
+        Command cAST = parseCases();
         accept(Token.END);
         finish(commandPos);
-        //commandAST = new ChooseCommand(eAST, commandPos);
+        commandAST = new ChooseCommand(eAST,cAST, commandPos);
     }
     break;  
       
@@ -534,7 +535,148 @@ public class Parser {
 
     return commandAST;
   }
+  
+  //NUEVO
+  ///////////////////////////////////////////////////////////////////////////////
+//
+// CASES                                                                            
+//
+///////////////////////////////////////////////////////////////////////////////
+  
+    Command parseCaseLiteral() throws SyntaxError {                            
+    Command commandAST = null; // in case there's a syntactic error     
+    
+    SourcePosition commandPos = new SourcePosition();
+    start(commandPos);
+    
+    Expression eAST = parseExpression(); 
+    finish(commandPos);
+    commandAST = new CaseLiteralCommand(eAST,commandPos);
+    
+     
+   /* switch (currentToken.kind) {
 
+    case Token.INTLITERAL:
+      {
+        IntegerLiteral ilAST = parseIntegerLiteral();
+        finish(commandPos);
+        commandAST = new CaseLiteralCommand(ilAST, commandPos);
+      }
+      break;
+
+    case Token.CHARLITERAL:
+      {
+        CharacterLiteral clAST= parseCharacterLiteral();
+        finish(commandPos);
+        commandAST = new CaseLiteralCommand(clAST, commandPos);
+      }
+      break;
+      
+      default:
+      syntacticError("\"%\" cannot start an expression",
+        currentToken.spelling);
+      break;
+    
+    }*/
+     return commandAST;
+  }
+  
+   Command parseCaseRange() throws SyntaxError {                            
+    Command commandAST = null; // in case there's a syntactic error     
+    SourcePosition commandPos = new SourcePosition();
+    start(commandPos);
+    
+     Command clAST = parseCaseLiteral();
+     
+    if(currentToken.kind == Token.DOUBLEDOT){                                      
+        accept(Token.DOUBLEDOT);
+        Command c2AST = parseCaseLiteral();
+        commandAST = new CaseRangeCommand(clAST,c2AST,commandPos);
+    }
+    else{
+        commandAST = new CaseRangeCommand(clAST, null,commandPos);
+    }
+     finish(commandPos);
+     
+     
+     return commandAST;
+  }
+   
+    Command parseCaseLiterals() throws SyntaxError {                            
+    Command commandAST = null; // in case there's a syntactic error     
+    SourcePosition commandPos = new SourcePosition();
+    start(commandPos);
+    
+     Command crAST = parseCaseRange();
+     while(currentToken.kind==Token.VERTICAL){
+           
+            accept(Token.VERTICAL);
+            Command crrAST = parseCaseRange(); 
+            finish(commandPos);
+            commandAST = new CaseLiteralsCommand(crrAST,crAST,commandPos);    
+     }
+     return commandAST;
+  }
+
+   
+   Command parseElseCase() throws SyntaxError {                            
+    Command commandAST = null; // in case there's a syntactic error     
+    SourcePosition commandPos = new SourcePosition();
+    start(commandPos);
+    
+     accept(Token.ELSE);
+     Command cAST = parseCommand();
+     finish(commandPos);
+     commandAST = new ElseCaseCommand(cAST,commandPos);    
+     
+     return commandAST;
+  }
+   
+   
+   Command parseCase() throws SyntaxError {                            
+    Command commandAST = null; // in case there's a syntactic error     
+    SourcePosition commandPos = new SourcePosition();
+    start(commandPos);
+    
+     
+     accept(Token.WHEN);
+     Command clsAST = parseCaseLiterals();
+     accept(Token.THEN);
+     Command cAST = parseCommand();
+     
+     finish(commandPos);
+     commandAST = new CaseCommand(clsAST,cAST,commandPos);    
+     
+     return commandAST;
+  }
+    
+   Command parseCases() throws SyntaxError {
+        Command commandAST= null;
+        SourcePosition commandPos = new SourcePosition();
+        
+        start(commandPos);
+        Command clAST=null;
+        while(currentToken.kind==Token.WHEN){
+            clAST=parseCase();
+            finish(commandPos);
+            commandAST = new CasesCommand(clAST,null,commandPos);
+                      
+        }
+        if(currentToken.kind==Token.ELSE){
+            acceptIt();
+            Command c2AST=parseElseCase();
+            commandAST = new CasesCommand(clAST,c2AST,commandPos);
+        }
+         else{
+            commandAST = new CasesCommand(clAST, null,commandPos);
+        }
+        finish(commandPos);
+        
+        
+        return commandAST;
+        
+   }
+   
 ///////////////////////////////////////////////////////////////////////////////
 //
 // EXPRESSIONS
@@ -881,7 +1023,7 @@ public class Parser {
     switch (currentToken.kind) {
     case Token.RECURSIVE:                                                       // SE CREA EL TOKEN REC, se agregó al abstract-syntax-tree el visitRecDeclaration
       {
-        System.out.println("RECursive");
+        //System.out.println("RECursive");
         acceptIt();
         Declaration dAST = parseProcFuncs();
         accept(Token.END);
@@ -921,7 +1063,6 @@ public class Parser {
     return declarationAST;
  }
   
-  //NUEVAS REGLAS
   
   Declaration parseProcFunc() throws SyntaxError {                              // SE CREA EL PROC-FUNC 
     Declaration declarationAST = null; // in case there's a syntactic error
@@ -991,105 +1132,7 @@ public class Parser {
     
     
     }
-  Declaration parseCaseLiteral() throws SyntaxError {                            
-    Declaration declarationAST = null; // in case there's a syntactic error     
-    
-    SourcePosition declarationPos = new SourcePosition();
-    start(declarationPos);
-     
-    switch (currentToken.kind) {
-     
-    case Token.INTLITERAL:
-     {
-        acceptIt();
-        IntegerLiteral ilAST = parseIntegerLiteral();
-        finish(declarationPos);
-        declarationAST = new CaseLiteralDeclaration(ilAST,declarationPos);   //REVISAR METODO   
-     }
-     break;
-     
-    case Token.CHARLITERAL:
-     {
-         acceptIt();
-        CharacterLiteral clAST = parseCharacterLiteral();
-        finish(declarationPos);
-        //declarationAST = new CaseLiteralCharDeclaration(ilAST,declarationPos);    //REVISAR METODO 
-     }
-     break;
-
-    } 
-     
-     return declarationAST;
-  }
-  
-   Declaration parseCaseRange() throws SyntaxError {                            
-    Declaration declarationAST = null; // in case there's a syntactic error     
-    SourcePosition declarationPos = new SourcePosition();
-    start(declarationPos);
-    
-     Declaration clAST = parseCaseLiteral();
-     
-     while(currentToken.kind==Token.DOUBLEDOT){
-         acceptIt();
-         Declaration cllAST = parseCaseLiteral(); //ceroOunaVEz
-         //declarationAST = new CaseRangeDeclaration(clAST, cllAST,declarationPos);    
-     }
-     finish(declarationPos);
-     
-     
-     return declarationAST;
-  }
-   
-    Declaration parseCaseLiterals() throws SyntaxError {                            
-    Declaration declarationAST = null; // in case there's a syntactic error     
-    SourcePosition declarationPos = new SourcePosition();
-    start(declarationPos);
-    
-     Declaration crAST = parseCaseRange();
-     accept(Token.VERTICAL);
-    
-     Declaration crrAST = parseCaseRange(); //ceroOunaVEz
-     
-     finish(declarationPos);
-     //declarationAST = new CaseLiteralsDeclaration(crrAST,crAST,declarationPos);    
-     
-     return declarationAST;
-  }
-
-   
-   Declaration parseElseCase() throws SyntaxError {                            
-    Declaration declarationAST = null; // in case there's a syntactic error     
-    SourcePosition declarationPos = new SourcePosition();
-    start(declarationPos);
-    
-     
-     accept(Token.ELSE);
-     Command cAST = parseCommand();
-     
-     finish(declarationPos);
-     //declarationAST = new ElseCaseDeclaration(cAST,declarationPos);    
-     
-     return declarationAST;
-  }
-   
-   
-   Declaration parseCase() throws SyntaxError {                            
-    Declaration declarationAST = null; // in case there's a syntactic error     
-    SourcePosition declarationPos = new SourcePosition();
-    start(declarationPos);
-    
-     
-     accept(Token.WHEN);
-     Declaration clsAST = parseCaseLiterals();
-     accept(Token.THEN);
-     Command cAST = parseCommand();
-     
-     finish(declarationPos);
-     //declarationAST = new CaseDeclaration(cAST,declarationPos);    
-     
-     return declarationAST;
-  }
-   
+ 
    
   
 
@@ -1369,4 +1412,5 @@ public class Parser {
     }
     return fieldAST;
   }
+
 }

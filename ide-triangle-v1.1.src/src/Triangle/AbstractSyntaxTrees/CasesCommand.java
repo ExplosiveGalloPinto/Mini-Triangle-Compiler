@@ -11,19 +11,20 @@ import Triangle.SyntacticAnalyzer.SourcePosition;
  *
  * @author Ale
  */
-public class CaseLiteralsDeclaration extends Declaration{
-    public CaseLiteralsDeclaration (CaseRangeDeclaration cdAST,CaseRangeDeclaration cd2AST,SourcePosition thePosition) {
+
+public class CasesCommand extends Command{
+    public CasesCommand (Command cdAST,Command edAST,SourcePosition thePosition) {
         super (thePosition);
         cd = cdAST;
-        cd2=cd2AST;
+        e=edAST;
    
       }
 
       public Object visit(Visitor v, Object o) {
-        return v.visitCaseLiteralsDeclaration(this, o);
+        return v.visitCasesCommand(this, o);
       }
 
-      public CaseRangeDeclaration cd;
-      public CaseRangeDeclaration cd2;
+      public Command cd;
+      public Command e;
     
 }

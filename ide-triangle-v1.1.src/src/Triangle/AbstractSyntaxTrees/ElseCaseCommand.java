@@ -11,17 +11,18 @@ import Triangle.SyntacticAnalyzer.SourcePosition;
  *
  * @author Ale
  */
-public class CaseLiteralDeclaration extends Declaration{
-    public CaseLiteralDeclaration (IntegerLiteral iAST,SourcePosition thePosition) {
+
+public class ElseCaseCommand extends Command{
+    public ElseCaseCommand (Command cAST,SourcePosition thePosition) {
         super (thePosition);
-        I = iAST;
+        c = cAST;
    
       }
 
       public Object visit(Visitor v, Object o) {
-        return v.visitCaseLiteralDeclaration(this, o);
+        return v.visitElseCaseCommand(this, o);
       }
 
-      public IntegerLiteral I;
+      public Command c;
     
 }

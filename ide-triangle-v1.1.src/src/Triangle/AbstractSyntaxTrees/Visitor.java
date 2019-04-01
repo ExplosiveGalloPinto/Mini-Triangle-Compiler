@@ -36,8 +36,13 @@ public interface Visitor {
   public abstract Object visitLoopForDoCommand(LoopForDoCommand ast, Object o);                 //nuevo
   public abstract Object visitLoopForWhileCommand(LoopForWhileCommand ast, Object o);           //nuevo
   public abstract Object visitLoopForUntilCommand(LoopForUntilCommand ast, Object o);           //nuevo
-
-  
+  public abstract Object visitCaseLiteralCommand(CaseLiteralCommand ast, Object o);     //Nuevo
+  //public abstract Object visitCaseLiteralCharDeclaration(CaseLiteralCharDeclaration ast, Object o);     //Nuevo
+  public abstract Object visitCaseRangeCommand(CaseRangeCommand ast, Object o);         //Nuevo
+  public abstract Object visitCaseLiteralsCommand(CaseLiteralsCommand ast, Object o);    //Nuevo
+  public abstract Object visitElseCaseCommand(ElseCaseCommand ast, Object o);           //Nuevo
+  public abstract Object visitCaseCommand(CaseCommand ast, Object o);                    //Nuevo
+  public abstract Object visitCasesCommand(CasesCommand ast, Object o);                 //Nuevo
 
 
   // Expressions
@@ -66,13 +71,7 @@ public interface Visitor {
   public abstract Object visitPrivateDeclaration(PrivateDeclaration ast, Object o);            //Nuevo
   public abstract Object visitProcFuncDeclaration(ProcFuncDeclaration ast, Object o);          //Nuevo
   public abstract Object visitParDeclaration(ParDeclaration ast, Object o);                     //Nuevo
-  public abstract Object visitCaseLiteralDeclaration(CaseLiteralDeclaration ast, Object o);     //Nuevo
-  public abstract Object visitCaseLiteralCharDeclaration(CaseLiteralCharDeclaration ast, Object o);     //Nuevo
-  public abstract Object visitCaseRangeDeclaration(CaseRangeDeclaration ast, Object o);         //Nuevo
-  public abstract Object visitCaseLiteralsDeclaration(CaseLiteralsDeclaration ast, Object o);    //Nuevo
-  public abstract Object visitElseCaseDeclaration(ElseCaseDeclaration ast, Object o);           //Nuevo
-  public abstract Object visitCaseDeclaration(CaseDeclaration ast, Object o);                    //Nuevo
-  public abstract Object visitCasesDeclaration(CasesDeclaration ast, Object o);                    //Nuevo
+
   public abstract Object visitVarInitialization(VarInitialization ast, Object o);                //Nuevo
   
   // Array Aggregates

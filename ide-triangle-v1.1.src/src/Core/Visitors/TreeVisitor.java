@@ -14,12 +14,11 @@ import Triangle.AbstractSyntaxTrees.BinaryOperatorDeclaration;
 import Triangle.AbstractSyntaxTrees.BoolTypeDenoter;
 import Triangle.AbstractSyntaxTrees.CallCommand;
 import Triangle.AbstractSyntaxTrees.CallExpression;
-import Triangle.AbstractSyntaxTrees.CaseDeclaration;
-import Triangle.AbstractSyntaxTrees.CaseLiteralCharDeclaration;
-import Triangle.AbstractSyntaxTrees.CaseLiteralDeclaration;
-import Triangle.AbstractSyntaxTrees.CaseLiteralsDeclaration;
-import Triangle.AbstractSyntaxTrees.CaseRangeDeclaration;
-import Triangle.AbstractSyntaxTrees.CasesDeclaration;
+import Triangle.AbstractSyntaxTrees.CaseCommand;
+import Triangle.AbstractSyntaxTrees.CaseLiteralCommand;
+import Triangle.AbstractSyntaxTrees.CaseLiteralsCommand;
+import Triangle.AbstractSyntaxTrees.CaseRangeCommand;
+import Triangle.AbstractSyntaxTrees.CasesCommand;
 import Triangle.AbstractSyntaxTrees.CharTypeDenoter;
 import Triangle.AbstractSyntaxTrees.CharacterExpression;
 import Triangle.AbstractSyntaxTrees.CharacterLiteral;
@@ -28,7 +27,7 @@ import Triangle.AbstractSyntaxTrees.ConstActualParameter;
 import Triangle.AbstractSyntaxTrees.ConstDeclaration;
 import Triangle.AbstractSyntaxTrees.ConstFormalParameter;
 import Triangle.AbstractSyntaxTrees.DotVname;
-import Triangle.AbstractSyntaxTrees.ElseCaseDeclaration;
+import Triangle.AbstractSyntaxTrees.ElseCaseCommand;
 import Triangle.AbstractSyntaxTrees.EmptyActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.EmptyCommand;
 import Triangle.AbstractSyntaxTrees.EmptyExpression;
@@ -532,32 +531,29 @@ public class TreeVisitor implements Visitor {
         return(createBinary("Par Declaration", pd.d, pd.d2));
     }
     
-    public Object visitCaseLiteralDeclaration(CaseLiteralDeclaration cld, Object o) {
-        return(createUnary("Case-Literal Declaration", cld.I));
+    public Object visitCaseLiteralCommand(CaseLiteralCommand cld, Object o) {
+        return(createUnary("Case-Literal Command", cld.I));
     }
     
-    public Object visitCaseLiteralCharDeclaration(CaseLiteralCharDeclaration ccd, Object o) {
-        return(createUnary("Case Literal Char", ccd.I));
+    
+    public Object visitCaseRangeCommand(CaseRangeCommand crd, Object o) {
+        return(createBinary("Case-Range Command", crd.I, crd.I2));
     }
     
-    public Object visitCaseRangeDeclaration(CaseRangeDeclaration crd, Object o) {
-        return(createBinary("Case-Range Declaration", crd.I, crd.I2));
+    public Object visitCaseLiteralsCommand(CaseLiteralsCommand cdls, Object o) {
+        return(createBinary("Case-Literals Command", cdls.cd, cdls.cd2));
     }
     
-    public Object visitCaseLiteralsDeclaration(CaseLiteralsDeclaration cdls, Object o) {
-        return(createBinary("Case-Literals Declaration", cdls.cd, cdls.cd2));
+    public Object visitCaseCommand(CaseCommand cd, Object o) {
+        return(createBinary("Case Command", cd.c, cd.cl));
     }
     
-    public Object visitCaseDeclaration(CaseDeclaration cd, Object o) {
-        return(createBinary("Case Declaration", cd.c, cd.cl));
+    public Object visitCasesCommand(CasesCommand cd, Object o) {
+        return(createBinary("Cases Command", cd.cd, cd.e));
     }
     
-    public Object visitCasesDeclaration(CasesDeclaration cd, Object o) {
-        return(createBinary("Cases Declaration", cd.cd, cd.e));
-    }
-    
-    public Object visitElseCaseDeclaration(ElseCaseDeclaration ecd, Object o) {
-        return(createUnary("ElseCase Declaration", ecd.c));
+    public Object visitElseCaseCommand(ElseCaseCommand ecd, Object o) {
+        return(createUnary("ElseCase Command", ecd.c));
     }
     
 

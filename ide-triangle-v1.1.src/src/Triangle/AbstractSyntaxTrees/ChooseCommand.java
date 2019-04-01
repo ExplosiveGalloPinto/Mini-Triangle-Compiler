@@ -13,7 +13,7 @@ import Triangle.SyntacticAnalyzer.SourcePosition;
  */
 public class ChooseCommand extends Command {
     
-    public ChooseCommand (Expression eAST, CasesDeclaration cAST, SourcePosition thePosition) {
+    public ChooseCommand (Expression eAST,Command cAST, SourcePosition thePosition) {
         super (thePosition);
         E = eAST;
         C = cAST;
@@ -24,6 +24,6 @@ public class ChooseCommand extends Command {
       }
 
       public Expression E;
-      public CasesDeclaration C;
+      public Command C;
 
 }

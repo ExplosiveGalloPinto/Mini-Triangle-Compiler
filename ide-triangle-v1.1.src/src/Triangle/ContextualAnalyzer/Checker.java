@@ -25,12 +25,11 @@ import Triangle.AbstractSyntaxTrees.BinaryOperatorDeclaration;
 import Triangle.AbstractSyntaxTrees.BoolTypeDenoter;
 import Triangle.AbstractSyntaxTrees.CallCommand;
 import Triangle.AbstractSyntaxTrees.CallExpression;
-import Triangle.AbstractSyntaxTrees.CaseDeclaration;
-import Triangle.AbstractSyntaxTrees.CaseLiteralCharDeclaration;
-import Triangle.AbstractSyntaxTrees.CaseLiteralDeclaration;
-import Triangle.AbstractSyntaxTrees.CaseLiteralsDeclaration;
-import Triangle.AbstractSyntaxTrees.CaseRangeDeclaration;
-import Triangle.AbstractSyntaxTrees.CasesDeclaration;
+import Triangle.AbstractSyntaxTrees.CaseCommand;
+import Triangle.AbstractSyntaxTrees.CaseLiteralCommand;
+import Triangle.AbstractSyntaxTrees.CaseLiteralsCommand;
+import Triangle.AbstractSyntaxTrees.CaseRangeCommand;
+import Triangle.AbstractSyntaxTrees.CasesCommand;
 import Triangle.AbstractSyntaxTrees.CharTypeDenoter;
 import Triangle.AbstractSyntaxTrees.CharacterExpression;
 import Triangle.AbstractSyntaxTrees.CharacterLiteral;
@@ -40,7 +39,7 @@ import Triangle.AbstractSyntaxTrees.ConstDeclaration;
 import Triangle.AbstractSyntaxTrees.ConstFormalParameter;
 import Triangle.AbstractSyntaxTrees.Declaration;
 import Triangle.AbstractSyntaxTrees.DotVname;
-import Triangle.AbstractSyntaxTrees.ElseCaseDeclaration;
+import Triangle.AbstractSyntaxTrees.ElseCaseCommand;
 import Triangle.AbstractSyntaxTrees.EmptyActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.EmptyCommand;
 import Triangle.AbstractSyntaxTrees.EmptyExpression;
@@ -1032,37 +1031,34 @@ public final class Checker implements Visitor {
     }
     
     @Override
-    public Object visitCaseLiteralDeclaration(CaseLiteralDeclaration ast, Object o) {
+    public Object visitCaseLiteralCommand(CaseLiteralCommand ast, Object o) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+   
+    
+    @Override
+    public Object visitCaseRangeCommand(CaseRangeCommand ast, Object o) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    @Override
+    public Object visitCaseLiteralsCommand(CaseLiteralsCommand ast, Object o) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    @Override
+    public Object visitCaseCommand(CaseCommand ast, Object o) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Object visitCaseLiteralCharDeclaration(CaseLiteralCharDeclaration ast, Object o) {
+    public Object visitCasesCommand(CasesCommand ast, Object o) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     @Override
-    public Object visitCaseRangeDeclaration(CaseRangeDeclaration ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
-    @Override
-    public Object visitCaseLiteralsDeclaration(CaseLiteralsDeclaration ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
-    @Override
-    public Object visitCaseDeclaration(CaseDeclaration ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visitCasesDeclaration(CasesDeclaration ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
-    @Override
-    public Object visitElseCaseDeclaration(ElseCaseDeclaration ast, Object o) {
+    public Object visitElseCaseCommand(ElseCaseCommand ast, Object o) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
    
