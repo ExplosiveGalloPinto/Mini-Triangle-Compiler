@@ -314,7 +314,7 @@ public class Parser {
           commandAST = new AssignCommand(vAST, eAST, commandPos);
         }
       }
-      //break;
+      break;
       
       
       //Eliminar de single-Command (begin, let, if, while)
@@ -378,7 +378,9 @@ public class Parser {
             {
                 acceptIt();
                 Expression eAST = parseExpression();
+                System.out.println("hola");
                 accept(Token.DO);
+                System.out.println("hola2");
                 Command cAST = parseCommand();
                 accept(Token.END);
                 finish(commandPos);
@@ -521,9 +523,9 @@ public class Parser {
     //case Token.ELSE:
     //case Token.IN:
     case Token.EOT:
-
+      System.out.println("Aqui");
       finish(commandPos);
-      commandAST = new EmptyCommand(commandPos);
+      commandAST = new PassCommand(commandPos);
       break;
 
     default:
@@ -544,14 +546,14 @@ public class Parser {
 ///////////////////////////////////////////////////////////////////////////////
   
     Command parseCaseLiteral() throws SyntaxError {                            
-    Command commandAST = null; // in case there's a syntactic error     
-    
-    SourcePosition commandPos = new SourcePosition();
-    start(commandPos);
-    
-    Expression eAST = parseExpression(); 
-    finish(commandPos);
-    commandAST = new CaseLiteralCommand(eAST,commandPos);
+        Command commandAST = null; // in case there's a syntactic error     
+
+        SourcePosition commandPos = new SourcePosition();
+        start(commandPos);
+
+        Expression eAST = parseExpression(); 
+        finish(commandPos);
+        commandAST = new CaseLiteralCommand(eAST,commandPos);
     
      
    /* switch (currentToken.kind) {
@@ -1013,7 +1015,49 @@ public class Parser {
     return declarationAST;
   }
   
-  
+    Declaration parseProcFunc() throws SyntaxError {                              // SE CREA EL PROC-FUNC 
+    Declaration declarationAST = null; // in case there's a syntactic error
+
+    SourcePosition declarationPos = new SourcePosition();
+    start(declarationPos);
+
+    switch (currentToken.kind) {
+                  
+    case Token.PROC:
+      {
+        acceptIt();
+        Identifier iAST = parseIdentifier();
+        accept(Token.LPAREN);
+        FormalParameterSequence fpsAST = parseFormalParameterSequence();
+        accept(Token.RPAREN);
+        accept(Token.IS);
+        Command cAST = parseCommand();
+        accept(Token.END);
+        finish(declarationPos);
+        declarationAST = new ProcDeclaration(iAST, fpsAST, cAST, declarationPos);
+      }
+      break;
+
+    case Token.FUNC:
+      {
+        acceptIt();
+        Identifier iAST = parseIdentifier();
+        accept(Token.LPAREN);
+        FormalParameterSequence fpsAST = parseFormalParameterSequence();
+        accept(Token.RPAREN);
+        accept(Token.COLON);
+        TypeDenoter tAST = parseTypeDenoter();
+        accept(Token.IS);
+        Expression eAST = parseExpression();
+        finish(declarationPos);
+        declarationAST = new FuncDeclaration(iAST, fpsAST, tAST, eAST,
+          declarationPos);
+      }
+      break;
+    }
+    return declarationAST;
+ }
+    
   Declaration parseCompoundDeclaration() throws SyntaxError {                   // SE CREA LA DECLARACIÓN COMPOUND DECLARATION
     Declaration declarationAST = null; // in case there's a syntactic error
     SourcePosition declarationPos = new SourcePosition();
@@ -1063,49 +1107,7 @@ public class Parser {
     return declarationAST;
  }
   
-  
-  Declaration parseProcFunc() throws SyntaxError {                              // SE CREA EL PROC-FUNC 
-    Declaration declarationAST = null; // in case there's a syntactic error
 
-    SourcePosition declarationPos = new SourcePosition();
-    start(declarationPos);
-
-    switch (currentToken.kind) {
-                  
-    case Token.PROC:
-      {
-        acceptIt();
-        Identifier iAST = parseIdentifier();
-        accept(Token.LPAREN);
-        FormalParameterSequence fpsAST = parseFormalParameterSequence();
-        accept(Token.RPAREN);
-        accept(Token.IS);
-        Command cAST = parseCommand();
-        //accept(Token.END);
-        finish(declarationPos);
-        declarationAST = new ProcDeclaration(iAST, fpsAST, cAST, declarationPos);
-      }
-      break;
-
-    case Token.FUNC:
-      {
-        acceptIt();
-        Identifier iAST = parseIdentifier();
-        accept(Token.LPAREN);
-        FormalParameterSequence fpsAST = parseFormalParameterSequence();
-        accept(Token.RPAREN);
-        accept(Token.COLON);
-        TypeDenoter tAST = parseTypeDenoter();
-        accept(Token.IS);
-        Expression eAST = parseExpression();
-        finish(declarationPos);
-        declarationAST = new FuncDeclaration(iAST, fpsAST, tAST, eAST,
-          declarationPos);
-      }
-      break;
-    }
-    return declarationAST;
- }
   
   Declaration parseProcFuncs() throws SyntaxError {                             // SE CREA PROCFUNCS DECLARATION, UTILIZANDO EL PRIVAMENTE CREADO PROC UNC
     Declaration declarationAST = null; // in case there's a syntactic error     // DESPUES DE CREADO , se importa ProcFuncDeclaration al Parser.

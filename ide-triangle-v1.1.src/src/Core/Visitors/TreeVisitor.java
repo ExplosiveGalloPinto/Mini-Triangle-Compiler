@@ -537,7 +537,13 @@ public class TreeVisitor implements Visitor {
     
     
     public Object visitCaseRangeCommand(CaseRangeCommand crd, Object o) {
-        return(createBinary("Case-Range Command", crd.I, crd.I2));
+        if (crd.I2==null){
+            return(createUnary("Case-Range Command", crd.I));
+            
+        }else{
+            return(createBinary("Case-Range Command", crd.I, crd.I2));
+    
+        }
     }
     
     public Object visitCaseLiteralsCommand(CaseLiteralsCommand cdls, Object o) {
@@ -549,7 +555,11 @@ public class TreeVisitor implements Visitor {
     }
     
     public Object visitCasesCommand(CasesCommand cd, Object o) {
-        return(createBinary("Cases Command", cd.cd, cd.e));
+        if(cd.e==null){
+            return(createUnary("Cases Command", cd.cd));
+        }else{
+            return(createBinary("Cases Command", cd.cd, cd.e));
+        }
     }
     
     public Object visitElseCaseCommand(ElseCaseCommand ecd, Object o) {
