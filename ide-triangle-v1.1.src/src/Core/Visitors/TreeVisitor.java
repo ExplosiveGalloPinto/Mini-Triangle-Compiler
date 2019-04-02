@@ -44,6 +44,7 @@ import Triangle.AbstractSyntaxTrees.IntegerExpression;
 import Triangle.AbstractSyntaxTrees.IntegerLiteral;
 import Triangle.AbstractSyntaxTrees.LetCommand;
 import Triangle.AbstractSyntaxTrees.LetExpression;
+import Triangle.AbstractSyntaxTrees.LongIdentifier;
 import Triangle.AbstractSyntaxTrees.LoopDoUntilCommand;
 import Triangle.AbstractSyntaxTrees.LoopDoWhileCommand;
 import Triangle.AbstractSyntaxTrees.LoopForDoCommand;
@@ -57,6 +58,8 @@ import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
 import Triangle.AbstractSyntaxTrees.MultipleFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleRecordAggregate;
 import Triangle.AbstractSyntaxTrees.Operator;
+import Triangle.AbstractSyntaxTrees.PackageDeclaration;
+import Triangle.AbstractSyntaxTrees.PackageIdentifier;
 import Triangle.AbstractSyntaxTrees.ParDeclaration;
 import Triangle.AbstractSyntaxTrees.PassCommand;
 import Triangle.AbstractSyntaxTrees.PrivateDeclaration;
@@ -471,7 +474,7 @@ public class TreeVisitor implements Visitor {
     
       //Se agregaron todas las modificaciones del Visitor
     public Object visitPassCommand(PassCommand nc, Object o) {
-        return(createNullary("Nothing Command"));
+        return(createNullary("Pass Command"));
     }
     
     public Object visitLoopDoUntilCommand(LoopDoUntilCommand lwc, Object o) {
@@ -564,6 +567,23 @@ public class TreeVisitor implements Visitor {
     
     public Object visitElseCaseCommand(ElseCaseCommand ecd, Object o) {
         return(createUnary("ElseCase Command", ecd.c));
+    }
+    
+    public Object visitLongIdentifier(LongIdentifier li, Object o) {
+        
+        if(li.I==null){
+            return(createUnary("Cases Command",li.I2));
+        }else{
+            return(createBinary("Cases Command", li.I, li.I2));
+        }
+    }
+    
+    public Object visitPackageDeclaration(PackageDeclaration pd, Object o) {
+        return(createBinary("Package Declaration", pd.E,pd.I));
+    }
+    
+    public Object visitPackageIdentifier(PackageIdentifier pi, Object o) {
+        return(createUnary("Package Identifier", pi.I));
     }
     
 

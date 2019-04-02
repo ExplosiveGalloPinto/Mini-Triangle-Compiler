@@ -89,44 +89,45 @@ final class Token extends Object {
     LET			= 15,
     LOOP                = 16,//NUEVA
     OF			= 17,
-    PAR                 = 18,//NUEVA
-    PASS                = 19,//NUEVA
-    PRIVATE             = 20,//NUEVA
-    PROC		= 21,
-    RECORD		= 22,
-    RECURSIVE           = 23,//NUEVA
-    THEN		= 24,
-    TO                  = 25,//NUEVA
-    TYPE		= 26,
-    UNTIL               = 27,//NUEVA
-    VAR			= 28,
-    WHEN                = 29,//NUEVA
-    WHILE		= 30,
+    PACKAGE             = 18,//NUEVA
+    PAR                 = 19,//NUEVA
+    PASS                = 20,//NUEVA
+    PRIVATE             = 21,//NUEVA
+    PROC		= 22,
+    RECORD		= 23,
+    RECURSIVE           = 24,//NUEVA
+    THEN		= 25,
+    TO                  = 26,//NUEVA
+    TYPE		= 27,
+    UNTIL               = 28,//NUEVA
+    VAR			= 29,
+    WHEN                = 30,//NUEVA
+    WHILE		= 31,
 
     // punctuation...
-    VERTICAL            = 31,  //NUEVA
-    DOUBLEBECOMES       = 32,  //NUEVA
-    DOLAR               = 33,   //NUEVA
-    DOUBLEDOT           = 34,   //NUEVA
+    VERTICAL            = 32,  //NUEVA
+    DOUBLEBECOMES       = 33,  //NUEVA
+    DOLAR               = 34,   //NUEVA
+    DOUBLEDOT           = 35,   //NUEVA
           
-    DOT			= 35,
-    COLON		= 36,
-    SEMICOLON           = 37,
-    COMMA		= 38,
-    BECOMES		= 39,
-    IS			= 40,
+    DOT			= 36,
+    COLON		= 37,
+    SEMICOLON           = 38,
+    COMMA		= 39,
+    BECOMES		= 40,
+    IS			= 41,
 
     // brackets...
-    LPAREN		= 41,
-    RPAREN		= 42,
-    LBRACKET	= 43,
-    RBRACKET	= 44,
-    LCURLY		= 45,
-    RCURLY		= 46,
+    LPAREN		= 42,
+    RPAREN		= 43,
+    LBRACKET	= 44,
+    RBRACKET	= 45,
+    LCURLY		= 46,
+    RCURLY		= 47,
 
     // special tokens...
-    EOT			= 47,
-    ERROR		= 48;
+    EOT			= 48,
+    ERROR		= 49;
 
   private static String[] tokenTable = new String[] {
     "<int>",
@@ -148,6 +149,7 @@ final class Token extends Object {
     "let",
     "loop",
     "of",
+    "package",
     "par",
     "pass",
     "private",
@@ -160,7 +162,7 @@ final class Token extends Object {
     "until",
     "var",
     "when",
-    "while",  //30
+    "while",  //31
     "|",    //Nueva
     "::=",  //Nueva
     "$",    //Nueva

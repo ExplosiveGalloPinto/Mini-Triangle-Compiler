@@ -125,8 +125,20 @@ public interface Visitor {
   public abstract Object visitDotVname(DotVname ast, Object o);
   public abstract Object visitSimpleVname(SimpleVname ast, Object o);
   public abstract Object visitSubscriptVname(SubscriptVname ast, Object o);
+  
+  
+  //Package
+  public abstract Object visitPackageIdentifier(PackageIdentifier ast, Object o);          //NUEVO
+  public abstract Object visitLongIdentifier(LongIdentifier ast, Object o);                //NUEVO
+  public abstract Object visitPackageDeclaration(PackageDeclaration ast, Object o);        //NUEVO
 
   // Programs
   public abstract Object visitProgram(Program ast, Object o);
+  
+  
+
+   
+  
+  
 
 }

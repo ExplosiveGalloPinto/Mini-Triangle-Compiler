@@ -56,6 +56,7 @@ import Triangle.AbstractSyntaxTrees.IntegerExpression;
 import Triangle.AbstractSyntaxTrees.IntegerLiteral;
 import Triangle.AbstractSyntaxTrees.LetCommand;
 import Triangle.AbstractSyntaxTrees.LetExpression;
+import Triangle.AbstractSyntaxTrees.LongIdentifier;
 import Triangle.AbstractSyntaxTrees.LoopDoUntilCommand;
 import Triangle.AbstractSyntaxTrees.LoopDoWhileCommand;
 import Triangle.AbstractSyntaxTrees.LoopForDoCommand;
@@ -69,6 +70,8 @@ import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
 import Triangle.AbstractSyntaxTrees.MultipleFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleRecordAggregate;
 import Triangle.AbstractSyntaxTrees.Operator;
+import Triangle.AbstractSyntaxTrees.PackageDeclaration;
+import Triangle.AbstractSyntaxTrees.PackageIdentifier;
 import Triangle.AbstractSyntaxTrees.ParDeclaration;
 import Triangle.AbstractSyntaxTrees.PassCommand;
 import Triangle.AbstractSyntaxTrees.PrivateDeclaration;
@@ -180,6 +183,74 @@ public class Parser {
     }
     catch (SyntaxError s) { return null; }
     return programAST;
+  }
+  
+///////////////////////////////////////////////////////////////////////////////
+//
+// PACKAGE
+//
+///////////////////////////////////////////////////////////////////////////////
+
+// parseCommand parses the command, and constructs an AST
+// to represent its phrase structure.
+
+  Identifier parseLongIdentifier() throws SyntaxError {
+    Identifier identifierAST = null; // in case there's a syntactic error
+
+    SourcePosition identifierPos = new SourcePosition();
+
+    start(identifierPos);
+    
+     if(currentToken.kind == Token.IDENTIFIER){                                      
+        Identifier  ipAST = parsePackageIdentifier();
+        
+        if (currentToken.kind == Token.DOLAR){  
+            accept(Token.DOLAR);
+            Identifier  iAST = parseIdentifier();
+            finish(identifierPos);
+            String spelling = currentToken.spelling;
+            identifierAST = new LongIdentifier(ipAST,iAST,spelling,identifierPos);
+        }else{
+            
+            finish(identifierPos);
+            String spelling = currentToken.spelling;
+            identifierAST = new LongIdentifier(null,ipAST,spelling,identifierPos);
+        }
+    
+     }
+    return identifierAST;
+  }
+  
+  Declaration parsePackageDeclaration() throws SyntaxError {
+    Declaration declarationAST = null; // in case there's a syntactic error
+
+    SourcePosition declarationPos = new SourcePosition();
+
+    start(declarationPos);
+    
+    accept(Token.PACKAGE);
+    Identifier  iAST = parsePackageIdentifier();
+    accept(Token.IS);
+    Declaration eAST = parseDeclaration();
+    accept(Token.END);
+    finish(declarationPos);
+    
+    declarationAST = new PackageDeclaration(iAST,eAST,declarationPos);
+    
+    return declarationAST;
+  }
+  
+   Identifier parsePackageIdentifier() throws SyntaxError {
+    Identifier identifierAST = null; // in case there's a syntactic error     
+
+        SourcePosition identifierPos = new SourcePosition();
+        start(identifierPos);
+
+        identifierAST = parseIdentifier(); 
+        finish(identifierPos);
+        
+        
+        return identifierAST;
   }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -478,6 +549,8 @@ public class Parser {
             break;
         }
     }
+    break;
+    
     case Token.LET:
     {
         acceptIt();
@@ -513,10 +586,7 @@ public class Parser {
         finish(commandPos);
         commandAST = new ChooseCommand(eAST,cAST, commandPos);
     }
-    break;  
-      
-    
-    
+    break;    
       
     //case Token.SEMICOLON:
     //case Token.END:
@@ -545,24 +615,24 @@ public class Parser {
 //
 ///////////////////////////////////////////////////////////////////////////////
   
-    Command parseCaseLiteral() throws SyntaxError {                            
-        Command commandAST = null; // in case there's a syntactic error     
+    Expression parseCaseLiteral() throws SyntaxError {                            
+        Expression commandAST = null; // in case there's a syntactic error     
 
         SourcePosition commandPos = new SourcePosition();
         start(commandPos);
 
-        Expression eAST = parseExpression(); 
+        /*Expression eAST = parseExpression(); 
         finish(commandPos);
-        commandAST = new CaseLiteralCommand(eAST,commandPos);
+        commandAST = new CaseLiteralCommand(eAST,commandPos);*/
     
      
-   /* switch (currentToken.kind) {
+    switch (currentToken.kind) {
 
     case Token.INTLITERAL:
       {
         IntegerLiteral ilAST = parseIntegerLiteral();
         finish(commandPos);
-        commandAST = new CaseLiteralCommand(ilAST, commandPos);
+        commandAST = new IntegerExpression(ilAST, commandPos);
       }
       break;
 
@@ -570,7 +640,7 @@ public class Parser {
       {
         CharacterLiteral clAST= parseCharacterLiteral();
         finish(commandPos);
-        commandAST = new CaseLiteralCommand(clAST, commandPos);
+        commandAST = new CharacterExpression(clAST, commandPos);
       }
       break;
       
@@ -579,7 +649,7 @@ public class Parser {
         currentToken.spelling);
       break;
     
-    }*/
+    }
      return commandAST;
   }
   
@@ -588,11 +658,11 @@ public class Parser {
     SourcePosition commandPos = new SourcePosition();
     start(commandPos);
     
-     Command clAST = parseCaseLiteral();
+     Expression clAST = parseCaseLiteral();
      
     if(currentToken.kind == Token.DOUBLEDOT){                                      
         accept(Token.DOUBLEDOT);
-        Command c2AST = parseCaseLiteral();
+        Expression c2AST = parseCaseLiteral();
         commandAST = new CaseRangeCommand(clAST,c2AST,commandPos);
     }
     else{
@@ -1091,14 +1161,15 @@ public class Parser {
     case Token.PAR:
       {
         acceptIt();
-        Declaration dAST = parseSingleDeclaration();
-       
-         
-        accept(Token.END);
-        finish(declarationPos);
-        //declarationAST = new ParDeclaration(dAST, dAST2, declarationPos);
-          
-          
+        Declaration dAST = parseSingleDeclaration(); 
+
+        while(currentToken.kind==Token.VERTICAL){
+            accept(Token.VERTICAL);
+            Declaration d2AST = parseSingleDeclaration(); 
+            finish(declarationPos);
+            declarationAST = new ParDeclaration(dAST, d2AST, declarationPos);         
+        }
+                  
       }
       break;
       default: declarationAST = parseSingleDeclaration();

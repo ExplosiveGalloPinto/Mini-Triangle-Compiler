@@ -11,19 +11,22 @@ import Triangle.SyntacticAnalyzer.SourcePosition;
  *
  * @author Ale
  */
-public class CaseRangeCommand extends Command{
-    public CaseRangeCommand (Expression iAST,Expression i2AST,SourcePosition thePosition) {
-        super (thePosition);
+
+import Triangle.SyntacticAnalyzer.SourcePosition;
+
+public class PackageIdentifier extends Identifier {
+    
+    public PackageIdentifier (Identifier iAST,String theSpelling, SourcePosition thePosition) {
+        super (theSpelling, thePosition);
         I = iAST;
-        I2=i2AST;
-   
+        
       }
 
       public Object visit(Visitor v, Object o) {
-        return v.visitCaseRangeCommand(this, o);
+        return v.visitPackageIdentifier(this, o);
       }
 
-      public Expression I;
-      public Expression I2;
-    
+      public Identifier I;
+     
+
 }
