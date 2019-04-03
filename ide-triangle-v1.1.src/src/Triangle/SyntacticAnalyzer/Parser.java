@@ -449,9 +449,7 @@ public class Parser {
             {
                 acceptIt();
                 Expression eAST = parseExpression();
-                System.out.println("hola");
                 accept(Token.DO);
-                System.out.println("hola2");
                 Command cAST = parseCommand();
                 accept(Token.END);
                 finish(commandPos);
